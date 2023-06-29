@@ -33,7 +33,7 @@ class Command(Base):
     """Модель для описания Команды."""
     title = Column()
     city = Column()
-    players = relationship("Player", back_populates="commands")
+    players = relationship('Player', back_populates="commands")
     answers = relationship("Answer", back_populates="command")
 
 
