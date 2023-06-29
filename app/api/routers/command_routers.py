@@ -13,7 +13,7 @@ async def create_command(command: CommandCreateRequest) -> CommandCreateRequest:
     return command
 
 
-@router.get("/", status_code=HTTPStatus.OK, tags=["Get",], summary="Получить список команд.")
+@router.get("/", status_code=HTTPStatus.OK, summary="Получить список команд.")
 async def get_commands():
     """Получить список команд."""
     return [
