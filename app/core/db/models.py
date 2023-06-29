@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import TIMESTAMP, Column, Integer, String, func
+from sqlalchemy import DATE, TIMESTAMP, Column, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import as_declarative
 from sqlalchemy.orm import declared_attr, relationship
@@ -22,11 +22,26 @@ class Base:
     __name__: str
 
 
+class User(Base):
+    """Модель полоьзователя."""
+
+    username = Column(String(100), nullable=False)
+    name = Column(String(100), nullable=False)
+    surname = Column(String(100))
+    email = Column(String(100), nullable=False)
+    hashed_password = Column(String(70), nullable=False)
+    date_of_birth = Column(DATE)
+    last_login_at = Column(TIMESTAMP)
+
+    def __repr__(self) -> str:
+        return f"{self.name} {self.surname}"
+
+
 class Command(Base):
     """Модель для описания Команды."""
 
-    title = Column()
-    city = Column()
+    title = Column(String(500), nullable=False)
+    city = Column(String(100))
     players = relationship("Player", back_populates="commands")
     answers = relationship("Answer", back_populates="command")
 
@@ -43,6 +58,7 @@ class Game(Base):
     title = Column(
         String,
     )
+    date_of = Column(TIMESTAMP)
     questions = relationship("Question", back_populates="game")
     answers = relationship("Answer", back_populates="game")
 
