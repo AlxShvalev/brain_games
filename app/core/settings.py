@@ -26,8 +26,8 @@ class Settings(BaseSettings):
     # Application settings
     TITLE: str = "Brain Games"
     RELOAD: bool = False
-    ROOT_PATH: str = "/api/v1"
-    MEDIA_DIR: str = BASE_DIR / "media"
+    ROOT_PATH: str = ""
+    MEDIA_DIR: Path = BASE_DIR / "media"
 
     @property
     def database_url(self) -> str:
