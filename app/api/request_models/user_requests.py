@@ -6,9 +6,11 @@ from pydantic import BaseModel, EmailStr, Field, SecretStr, StrictStr
 class UserCreateRequest(BaseModel):
     """Модель запроса для регистрации пользователя."""
 
-    username: StrictStr = Field(min_length=3, max_length=100)
-    name: StrictStr = Field(min_length=1, max_length=100)
-    email: EmailStr
+    username: StrictStr = Field(
+        min_length=3, max_length=100, title="username", description="username, уникальный для каждого пользователя."
+    )
+    name: StrictStr = Field(min_length=1, max_length=100, title="Имя пользователя")
+    email: EmailStr = Field()
     password: SecretStr
 
 
