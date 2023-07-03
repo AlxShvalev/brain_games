@@ -20,7 +20,7 @@ class AbstractRepository(abc.ABC):
 
     async def get_or_none(self, instance_id: UUID) -> Optional[DatabaseModel]:
         """Получает из базы объект модели по ID. В случе отсутствия возвращает None."""
-        stmt = select(self._model).where(id=instance_id)
+        stmt = select(self._model).where(self._model.id == instance_id)
         db_obj = await self._session.execute(stmt)
         return db_obj.scalars().first()
 
