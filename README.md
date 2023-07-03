@@ -2,6 +2,8 @@
 Проект для подготовки, проведения и подведения итогов интеллектуальных игр
 (спортивное ЧГК, квизы и т.д.)
 
+находится в разработке
+
 ## Технологии
 ![Python](https://img.shields.io/badge/python_3.11-3670A0?style=for-the-badge&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
