@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from app.api.request_models.request_base import RequestBaseModel
 
 
-class CommandCreateRequest(BaseModel):
+class CommandCreateRequest(RequestBaseModel):
     title: str
     city: str

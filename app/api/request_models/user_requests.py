@@ -1,9 +1,11 @@
 from datetime import date
 
-from pydantic import BaseModel, EmailStr, Field, SecretStr, StrictStr
+from pydantic import EmailStr, Field, SecretStr, StrictStr
+
+from app.api.request_models.request_base import RequestBaseModel
 
 
-class UserCreateRequest(BaseModel):
+class UserCreateRequest(RequestBaseModel):
     """Модель запроса для регистрации пользователя."""
 
     username: StrictStr = Field(
@@ -16,7 +18,7 @@ class UserCreateRequest(BaseModel):
     date_of_birth: date | None
 
 
-class UserUpdateRequest(BaseModel):
+class UserUpdateRequest(RequestBaseModel):
     """Модель запроса для изменения пользователя."""
 
     name: StrictStr
