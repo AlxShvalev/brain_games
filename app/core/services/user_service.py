@@ -29,7 +29,6 @@ class UserService:
             email=schema.email,
             name=schema.name,
             surname=schema.surname,
-            role=User.Role.USER,
             hashed_password=self._get_hashed_password(schema.password.get_secret_value()),
             date_of_birth=schema.date_of_birth,
         )

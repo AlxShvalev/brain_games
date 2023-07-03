@@ -1,7 +1,6 @@
-import enum
 import uuid
 
-from sqlalchemy import BOOLEAN, DATE, TIMESTAMP, Column, Enum, Integer, String, func
+from sqlalchemy import BOOLEAN, DATE, TIMESTAMP, Column, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import as_declarative
 from sqlalchemy.orm import declared_attr, relationship
@@ -27,17 +26,13 @@ class Base:
 class User(Base):
     """Модель пользователя."""
 
-    class Role(str, enum.Enum):
-        ADMIN = "admin"
-        STUFF = "stuff"
-        USER = "user"
-
     username = Column(String(100), nullable=False, unique=True)
     name = Column(String(100), nullable=False)
     surname = Column(String(100))
     email = Column(String(100), nullable=False, unique=True)
     hashed_password = Column(String(70), nullable=False)
-    role = Column(Enum(Role, name="role", values_callable=lambda obj: [e.value for e in obj]), nullable=False)
+    is_superuser = Column(BOOLEAN, default=False, nullable=False)
+    is_stuff = Column(BOOLEAN, default=False, nullable=False)
     date_of_birth = Column(DATE)
     last_login_at = Column(TIMESTAMP)
     commands = relationship("Command", back_populates="owner")
