@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     RELOAD: bool = False
     ROOT_PATH: str = ""
     MEDIA_DIR: Path = BASE_DIR / "media"
+    SECRET_KEY: str = "ThisIsSecretKey"
 
     @property
     def database_url(self) -> str:

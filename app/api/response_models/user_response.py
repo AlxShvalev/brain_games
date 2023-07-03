@@ -16,3 +16,9 @@ class UserResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UserLoginResponse(BaseModel):
+    """Тело ответа при аутентификации."""
+    access_token: str
+    refresh_token: str

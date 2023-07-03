@@ -20,7 +20,7 @@ class NotFoundError(ApplicationError):
     status_code: HTTPStatus = HTTPStatus.NOT_FOUND
 
 
-class ObjectAlreadyxistsError(BadRequestError):
+class ObjectAlreadyExistsError(BadRequestError):
     def __init__(self, model: DatabaseModel):
         self.detail = f"Объект '{model.__repr__()}' уже существует."
 
@@ -28,3 +28,15 @@ class ObjectAlreadyxistsError(BadRequestError):
 class ObjectNotFoundError(NotFoundError):
     def __init__(self, model: DatabaseModel, object_id: UUID):
         self.detail = f"Объект '{model.__name__}' c id '{object_id}' не найден."
+
+
+class UserNotFoundError(NotFoundError):
+    """Пользователь не найден."""
+
+    detail = "Пользователь не найден."
+
+
+class InvalidAuthenticationDataError(BadRequestError):
+    """Введены неверные данные для аутентификации."""
+
+    detail = "Неверный email или пароль."
