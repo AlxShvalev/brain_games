@@ -1,10 +1,12 @@
 from http import HTTPStatus
 from uuid import UUID
 
+from fastapi import HTTPException
+
 from app.core.db.models import Base as DatabaseModel
 
 
-class ApplicationError(Exception):
+class ApplicationError(HTTPException):
     """Исключение для внутренней бизнес-логики."""
 
     detail: str = "О! Какая-то неизвестная ошибка. Мы её обязательно опознаем и исправим!"
@@ -20,7 +22,7 @@ class NotFoundError(ApplicationError):
 
 class ObjectAlreadyxistsError(BadRequestError):
     def __init__(self, model: DatabaseModel):
-        self.detail = f"Объект '{model.__repr__} уже существует."
+        self.detail = f"Объект '{model.__repr__()}' уже существует."
 
 
 class ObjectNotFoundError(NotFoundError):

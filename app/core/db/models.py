@@ -45,7 +45,7 @@ class User(Base):
     questions = relationship("Question", back_populates="author")
 
     def __repr__(self):
-        return self.username
+        return f"User (username: {self.username}, email: {self.email})"
 
 
 class Command(Base):
