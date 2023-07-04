@@ -6,7 +6,11 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from passlib.context import CryptContext
 
-from app.api.request_models.user_requests import LoginRequest, UserCreateRequest, UserUpdateRequest
+from app.api.request_models.user_requests import (
+    LoginRequest,
+    UserCreateRequest,
+    UserUpdateRequest,
+)
 from app.api.response_models.user_response import UserLoginResponse, UserResponse
 from app.core import exceptions
 from app.core.db.models import User
@@ -16,8 +20,6 @@ from app.core.settings import settings
 PASSWORD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 OAUTH2_SCHEME = OAuth2PasswordBearer(tokenUrl="user/login", scheme_name="JWT")
 
-ACCESS_TOKEN_EXPIRES_MINUTES = 60
-REFRESH_TOKEN_EXPIRES_MINUTES = 60 * 5
 ALGORITHM = "HS256"
 
 
@@ -36,9 +38,9 @@ class UserService:
         """Аутентификация пользователя по username и паролю."""
         user = await self.__user_repository.get_by_username(auth_data.username)
         password = auth_data.password.get_secret_value()
-        if self._verify_hashed_password(password, user.hashed_password):
-            return user
-        raise exceptions.InvalidAuthenticationDataError
+        if not self._verify_hashed_password(password, user.hashed_password):
+            raise exceptions.InvalidAuthenticationDataError
+        return user
 
     def __create_jwt_token(self, username: str, expires_delta: int) -> str:
         """
@@ -58,8 +60,8 @@ class UserService:
         user.last_login_at = dt.datetime.now()
         await self.__user_repository.update(user.id, user)
         return UserLoginResponse(
-            access_token=self.__create_jwt_token(user.username, ACCESS_TOKEN_EXPIRES_MINUTES),
-            refresh_token=self.__create_jwt_token(user.username, REFRESH_TOKEN_EXPIRES_MINUTES)
+            access_token=self.__create_jwt_token(user.username, settings.ACCESS_TOKEN_EXPIRES_MINUTES),
+            refresh_token=self.__create_jwt_token(user.username, settings.REFRESH_TOKEN_EXPIRES_MINUTES),
         )
 
     async def register_new_user(self, schema: UserCreateRequest) -> UserResponse:

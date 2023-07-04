@@ -30,6 +30,9 @@ class Settings(BaseSettings):
     MEDIA_DIR: Path = BASE_DIR / "media"
     SECRET_KEY: str = "ThisIsSecretKey"
 
+    ACCESS_TOKEN_EXPIRES_MINUTES = 60
+    REFRESH_TOKEN_EXPIRES_MINUTES = 60 * 5
+
     @property
     def database_url(self) -> str:
         """Get db connection url."""
