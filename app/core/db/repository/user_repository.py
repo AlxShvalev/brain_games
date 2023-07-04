@@ -14,8 +14,8 @@ class UserRepository(AbstractRepository):
     def __init__(self, session: AsyncSession = Depends(get_async_session)) -> None:
         super().__init__(session, User)
 
-    async def get_by_username(self, email: str) -> User:
-        stmt = select(User).where(User.email == email)
+    async def get_by_username(self, username: str) -> User:
+        stmt = select(User).where(User.username == username)
         user = await self._session.execute(stmt)
         user = user.scalars().first()
         if not user:
