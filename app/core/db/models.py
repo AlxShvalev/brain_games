@@ -79,6 +79,7 @@ class CommandsGames(Base):
     commands = relationship("Command", back_populates="games")
     game_id = Column(UUID(as_uuid=True), ForeignKey(Game.id, ondelete="CASCADE"), nullable=False)
     games = relationship("Game", back_populates="commands")
+    command_number = Column(Integer, nullable=False)
 
 
 class Question(Base):
