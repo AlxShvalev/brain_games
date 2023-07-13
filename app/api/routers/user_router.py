@@ -4,7 +4,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends
 from fastapi_restful.cbv import cbv
 
-from app.api.request_models.user_requests import UserCreateRequest, LoginRequest
+from app.api.request_models.user_requests import LoginRequest, UserCreateRequest
 from app.api.response_models.user_response import UserLoginResponse, UserResponse
 from app.core.services.user_service import UserService
 
@@ -26,7 +26,16 @@ class UserCBV:
         response_description="Регистрация нового пользователя.",
     )
     async def create_user(self, schema: UserCreateRequest) -> UserResponse:
-        """Регистрация нового пользователя."""
+        """
+        Регистрация нового пользователя.
+
+        - **username**: юзернейм пользователя;
+        - **name**: имя пользователя;
+        - **surname**: фамилия пользователя (не обязательное поле);
+        - **email**: email пользователя;
+        - **password**: пароль пользователя;
+        - **date_of_birth**: дата рождения пользователя (не обязательное поле).
+        """
         return await self.user_service.register_new_user(schema)
 
     @router.get(
@@ -38,14 +47,24 @@ class UserCBV:
         response_description="Получить пользователя по его id.",
     )
     async def get_user(self, user_id: UUID) -> UserResponse:
-        """Получить пользователя по его id."""
+        """
+        Получить пользователя по его id.
+
+        - **id**: уникальный идентификатор пользователя;
+        - **username**: юзернейм пользователя;
+        - **name**: имя пользователя;
+        - **surname**: фамилия пользователя (не обязательное поле);
+        - **email**: email пользователя;
+        - **last_login_at**: дата и время последнего входа в систему (не обязательное поле).
+        """
         return await self.user_service.get_user_by_id(user_id)
 
-    @router.post(
-        "/login",
-        response_model=UserLoginResponse,
-        status_code=HTTPStatus.OK
-    )
+    @router.post("/login", response_model=UserLoginResponse, status_code=HTTPStatus.OK)
     async def login(self, auth_data: LoginRequest) -> UserLoginResponse:
-        """Аутентификация пользователя по username и паролю."""
+        """
+        Аутентификация пользователя по username и паролю.
+
+        - **access_token**: токен доступа пользователя;
+        - **refresh_token**: токен для обновления токена доступа пользовтеля.
+        """
         return await self.user_service.login(auth_data)
