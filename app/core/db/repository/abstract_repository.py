@@ -57,5 +57,5 @@ class AbstractRepository(abc.ABC):
     async def get_all(self) -> list[DatabaseModel]:
         """Возвращает все объекты модели из базы."""
         stmt = select(self._model)
-        db_odjs = await self._session.execute(stmt)
-        return db_odjs.scalars().all()
+        db_objs = await self._session.execute(stmt)
+        return db_objs.scalars().all()
