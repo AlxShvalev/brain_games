@@ -4,7 +4,11 @@ from uuid import UUID
 from fastapi import APIRouter, Depends
 from fastapi_restful.cbv import cbv
 
-from app.api.request_models.user_requests import LoginRequest, UserCreateRequest
+from app.api.request_models.user_requests import (
+    LoginRequest,
+    UserCreateRequest,
+    UserUpdateRequest,
+)
 from app.api.response_models.user_response import UserLoginResponse, UserResponse
 from app.core.services.user_service import UserService
 
@@ -88,3 +92,21 @@ class UserCBV:
         - **refresh_token**: токен для обновления токена доступа пользовтеля.
         """
         return await self.user_service.login(auth_data)
+
+    @router.patch(
+        "/{user_id}",
+        response_model=UserResponse,
+        response_model_exclude_none=True,
+        status_code=HTTPStatus.OK,
+        summary="Изменить данные пользователя.",
+        response_description="Изменить данные пльзователя.",
+    )
+    async def update_user(self, user_id: UUID, user_data: UserUpdateRequest) -> UserResponse:
+        """
+        Изменить данные пользователя.
+
+        - **name**: новое значение имени _(не обязательное поле)_;
+        - **surname**: новое значение фамилии _(не обязательное поле)_;
+        - **date_of_birth**: новое значение даты рождения _(не обязательное поле)_.
+        """
+        return await self.user_service.update_user(user_id, user_data)
