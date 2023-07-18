@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -13,6 +13,7 @@ class UserResponse(BaseModel):
     - **name**: имя пользователя;
     - **surname**: фамилия пользователя _(необязательное поле)_;
     - **email**: email пользователя;
+    - **date_of_birth**: дата рождения пользователя _(необязательное поле)_;
     - **last_login_at**: дата последнего входа в формате ISO 8601 _(необязательное поле)_.
     """
 
@@ -21,6 +22,7 @@ class UserResponse(BaseModel):
     name: str
     surname: str | None
     email: str
+    date_of_birth: date | None
     last_login_at: datetime | None
 
     class Config:
