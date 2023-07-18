@@ -44,8 +44,9 @@ class AbstractRepository(abc.ABC):
     async def update(self, instance_id: UUID, instance: DatabaseModel) -> DatabaseModel:
         """Обновляет существующий объект в базе."""
         instance.id = instance_id
-        instance = await self._session.merge(instance)
+        self._session.add(instance)
         await self._session.commit()
+        await self._session.refresh(instance)
         return instance
 
     async def update_all(self, instances: list[DatabaseModel]) -> list[DatabaseModel]:
