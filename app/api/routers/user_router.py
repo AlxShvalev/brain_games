@@ -10,6 +10,7 @@ from app.api.request_models.user_requests import (
     UserUpdateRequest,
 )
 from app.api.response_models.user_response import UserLoginResponse, UserResponse
+from app.core.services.authentication_service import AuthenticationService
 from app.core.services.user_service import UserService
 
 router = APIRouter(prefix="/users", tags=["Пользователи"])
@@ -20,6 +21,7 @@ class UserCBV:
     """Базовый класс для отображения пользователей."""
 
     user_service: UserService = Depends()
+    authentication_service: AuthenticationService = Depends()
 
     @router.post(
         "/",
@@ -91,7 +93,7 @@ class UserCBV:
         - **access_token**: токен доступа пользователя;
         - **refresh_token**: токен для обновления токена доступа пользовтеля.
         """
-        return await self.user_service.login(auth_data)
+        return await self.authentication_service.login(auth_data)
 
     @router.patch(
         "/{user_id}",
