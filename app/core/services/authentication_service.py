@@ -1,7 +1,9 @@
+import datetime as dt
+
 from fastapi import Depends
-from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
+from passlib.context import CryptContext
 
 from app.api.request_models.user_requests import LoginRequest
 from app.api.response_models.user_response import UserLoginResponse
@@ -9,7 +11,6 @@ from app.core import exceptions
 from app.core.db.models import User
 from app.core.db.repository.user_repository import UserRepository
 from app.core.settings import settings
-
 
 PASSWORD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 OAUTH2_SCHEME = OAuth2PasswordBearer(tokenUrl="user/login", scheme_name="JWT")
@@ -19,9 +20,11 @@ ALGORITHM = "HS256"
 
 class AuthenticationService:
     """User authorisation service class."""
+
     def __init__(self, user_repository: UserRepository = Depends()):
         self.__user_repository = user_repository
 
+    @staticmethod
     def _get_hashed_password(self, password: str) -> str:
         """Получить хеш пароля."""
         return PASSWORD_CONTEXT.hash(password)
