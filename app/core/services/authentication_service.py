@@ -25,9 +25,21 @@ class AuthenticationService:
         self.__user_repository = user_repository
 
     @staticmethod
-    def _get_hashed_password(self, password: str) -> str:
+    def _get_hashed_password(password: str) -> str:
         """Получить хеш пароля."""
         return PASSWORD_CONTEXT.hash(password)
+
+    @staticmethod
+    def _get_username_from_token(token: str) -> str:
+        """Возвращает username из токена."""
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+        except JWTError:
+            raise exceptions.UnauthorizedError
+        username = payload.get("username")
+        if not username:
+            raise exceptions.UnauthorizedError
+        return username
 
     def _verify_hashed_password(self, password: str, hashed_password: str) -> bool:
         return PASSWORD_CONTEXT.verify(password, hashed_password)
@@ -51,18 +63,6 @@ class AuthenticationService:
         expire = dt.datetime.utcnow() + dt.timedelta(minutes=expires_delta)
         to_encode = {"username": username, "exp": expire}
         return jwt.encode(to_encode, settings.SECRET_KEY, ALGORITHM)
-
-    @staticmethod
-    def _get_username_from_token(token: str) -> str:
-        """Возвращает username из токена."""
-        try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
-        except JWTError:
-            raise exceptions.UnauthorizedError
-        username = payload.get("username")
-        if not username:
-            raise exceptions.UnauthorizedError
-        return username
 
     async def login(self, auth_data: LoginRequest) -> UserLoginResponse:
         """Получить access- и refresh- токены."""
