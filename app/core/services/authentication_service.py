@@ -13,7 +13,7 @@ from app.core.db.repository.user_repository import UserRepository
 from app.core.settings import settings
 
 PASSWORD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
-OAUTH2_SCHEME = OAuth2PasswordBearer(tokenUrl="user/login", scheme_name="JWT")
+OAUTH2_SCHEME = OAuth2PasswordBearer(tokenUrl="users/login", scheme_name="JWT")
 
 ALGORITHM = "HS256"
 

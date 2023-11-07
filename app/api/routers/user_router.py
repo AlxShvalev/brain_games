@@ -66,6 +66,19 @@ class UserCBV:
         return await self.user_service.get_users()
 
     @router.get(
+        "/me",
+        response_model=UserResponse,
+        response_model_exclude_none=True,
+        status_code=HTTPStatus.OK,
+        summary="Получить информацию о текущем пользователе.",
+        response_description="Получить информацию о текущем пользователе.",
+    )
+    async def get_current_user(self, token: HTTPAuthorizationCredentials = Depends(HTTPBearer())) -> UserResponse:
+        """Получить информацию о текущем пользователе."""
+        credentials = token.credentials
+        return await self.authentication_service.get_current_user(credentials)
+
+    @router.get(
         "/{user_id}",
         response_model=UserResponse,
         response_model_exclude_none=True,
@@ -113,15 +126,3 @@ class UserCBV:
         - **date_of_birth**: новое значение даты рождения _(не обязательное поле)_.
         """
         return await self.user_service.update_user(user_id, user_data)
-
-    @router.get(
-        "/me",
-        response_model=UserResponse,
-        response_model_exclude_none=True,
-        status_code=HTTPStatus.OK,
-        summary="Получить информацию о текущем пользователе.",
-        response_description="Получить информацию о текущем пользователе.",
-    )
-    async def get_current_user(self, token: HTTPAuthorizationCredentials = Depends(HTTPBearer())) -> UserResponse:
-        """Получить информацию о текущем пользователе."""
-        return await self.authentication_service.get_current_user(token.credentials)
