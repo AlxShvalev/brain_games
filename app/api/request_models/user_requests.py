@@ -14,7 +14,7 @@ class UserCreateRequest(RequestBaseModel):
     - **surname**: фамилия пользователя _(не обязательное поле)_;
     - **email**: email пользователя;
     - **password**: пароль пользователя;
-    - **date_of_birth**: дата рождения в формате ISO 8601 _(не обязательно поле)_.
+    - **date_of_birth**: дата рождения в формате ISO 8601 _(не обязательное поле)_.
     """
 
     username: StrictStr = Field(min_length=3, max_length=100)
@@ -32,7 +32,7 @@ class UserUpdateRequest(RequestBaseModel):
     Доступные для изменения поля:
     - **name**: имя пользователя _(не обязательное поле)_;
     - **surname**: фамилия пользователя _(не обязательное поле)_;
-    - **date_of_birth**: дата рождения в формате ISO 8601 _(не обязательно поле)_.
+    - **date_of_birth**: дата рождения в формате ISO 8601 _(не обязательное поле)_.
     """
 
     name: StrictStr | None
