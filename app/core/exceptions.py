@@ -1,12 +1,10 @@
 from http import HTTPStatus
 from uuid import UUID
 
-from fastapi import HTTPException
-
 from app.core.db.models import Base as DatabaseModel
 
 
-class ApplicationError(HTTPException):
+class ApplicationError(Exception):
     """Исключение для внутренней бизнес-логики."""
 
     detail: str = "О! Какая-то неизвестная ошибка. Мы её обязательно опознаем и исправим!"
