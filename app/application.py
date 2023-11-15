@@ -1,13 +1,13 @@
 from http import HTTPStatus
 
-from core import exceptions
-from core.exceptions_handlers import (
-    application_error_handler,
-    internal_exception_handler,
-)
 from fastapi import FastAPI
 
 from app.api.routers import command_router, user_router
+from app.core import exceptions
+from app.core.exceptions_handlers import (
+    application_error_handler,
+    internal_exception_handler,
+)
 from app.core.settings import settings
 
 
