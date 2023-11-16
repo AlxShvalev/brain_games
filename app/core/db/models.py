@@ -35,7 +35,7 @@ class User(Base):
     is_staff = Column(BOOLEAN, default=False, nullable=False)
     date_of_birth = Column(DATE)
     last_login_at = Column(TIMESTAMP)
-    commands = relationship("Command", back_populates="owner")
+    teams = relationship("Team", back_populates="owner")
     games = relationship("Game", back_populates="editor")
     questions = relationship("Question", back_populates="author")
 
@@ -43,15 +43,15 @@ class User(Base):
         return f"User (username: {self.username}, email: {self.email})"
 
 
-class Command(Base):
+class Team(Base):
     """Модель для описания Команды."""
 
     title = Column(String(500), nullable=False, unique=True)
     city = Column(String(100))
     owner_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete="CASCADE"), nullable=False)
-    owner = relationship("User", back_populates="commands")
-    games = relationship("CommandsGames", back_populates="commands")
-    answers = relationship("Answer", back_populates="command")
+    owner = relationship("User", back_populates="teams")
+    games = relationship("TeamsGames", back_populates="teams")
+    answers = relationship("Answer", back_populates="team")
 
     def __repr__(self):
         return self.title
@@ -65,21 +65,21 @@ class Game(Base):
     editor_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete="CASCADE"), nullable=False)
     editor = relationship("User", back_populates="games")
     questions = relationship("GameQuestions", back_populates="game", order_by="GameQuestions.question_number")
-    commands = relationship("CommandsGames", back_populates="games")
+    teams = relationship("TeamsGames", back_populates="games")
     answers = relationship("Answer", back_populates="game")
 
     def __repr__(self):
         return self.title
 
 
-class CommandsGames(Base):
+class TeamsGames(Base):
     """Связь между командами и играми."""
 
-    command_id = Column(UUID(as_uuid=True), ForeignKey(Command.id, ondelete="CASCADE"), nullable=False)
-    commands = relationship("Command", back_populates="games")
+    team_id = Column(UUID(as_uuid=True), ForeignKey(Team.id, ondelete="CASCADE"), nullable=False)
+    teams = relationship("Team", back_populates="games")
     game_id = Column(UUID(as_uuid=True), ForeignKey(Game.id, ondelete="CASCADE"), nullable=False)
-    games = relationship("Game", back_populates="commands")
-    command_number = Column(Integer, nullable=False)
+    games = relationship("Game", back_populates="teams")
+    team_number = Column(Integer, nullable=False)
 
 
 class Question(Base):
@@ -111,7 +111,7 @@ class Answer(Base):
     is_correct = Column(BOOLEAN, nullable=False)
     game_id = Column(UUID(as_uuid=True), ForeignKey(Game.id, ondelete="CASCADE"), nullable=False)
     game = relationship("Game", back_populates="answers")
-    command_id = Column(UUID(as_uuid=True), ForeignKey(Command.id, ondelete="CASCADE"), nullable=False)
-    command = relationship("Command", back_populates="answers")
+    team_id = Column(UUID(as_uuid=True), ForeignKey(Team.id, ondelete="CASCADE"), nullable=False)
+    team = relationship("Team", back_populates="answers")
     question_id = Column(UUID(as_uuid=True), ForeignKey(Question.id, ondelete="CASCADE"), nullable=False)
     question = relationship("Question", back_populates="answers")
