@@ -30,12 +30,9 @@ class TeamCBV:
     ) -> TeamResponse:
         """Создать команду."""
         user = await self.authentication_service.get_current_user(token.credentials)
-        team = await self.team_service.create_new_team(team, user)
-        response = TeamResponse(id=team.id, title=team.title, city=team.city, owner=user)
-        return response
+        return await self.team_service.create_new_team(team, user)
 
-
-@router.get("/", status_code=HTTPStatus.OK, summary="Получить список команд.")
-async def get_commands():
-    """Получить список команд."""
-    return [{"id": 1, "title": "Command 1"}, {"id": 2, "title": "Command 2"}]
+    @router.get("/", response_model=list[TeamResponse], status_code=HTTPStatus.OK, summary="Получить список команд.")
+    async def get_commands(self) -> list[TeamResponse]:
+        """Получить список команд."""
+        return await self.team_service.get_teams_list()

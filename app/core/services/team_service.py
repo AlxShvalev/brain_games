@@ -12,3 +12,6 @@ class TeamService:
     async def create_new_team(self, new_team: TeamCreateRequest, user: User) -> Team:
         team = Team(title=new_team.title, city=new_team.city, owner_id=user.id)
         return await self.__team_repository.create(team)
+
+    async def get_teams_list(self) -> list[Team]:
+        return await self.__team_repository.get_all()

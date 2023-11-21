@@ -3,8 +3,6 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
-from app.api.response_models.user_response import UserResponse
-
 
 class TeamResponse(BaseModel):
     """
@@ -21,7 +19,6 @@ class TeamResponse(BaseModel):
     id: UUID
     title: str
     city: Optional[str]
-    owner: UserResponse
 
     class Config:
         orm_mode = True
